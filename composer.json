@@ -41,6 +41,7 @@
             "php artisan optimize"
         ],
         "post-update-cmd": [
+            "php artisan key:generate",
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
         ]
