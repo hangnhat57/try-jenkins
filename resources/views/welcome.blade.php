@@ -85,6 +85,7 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                     <a href="javascript:void()" onclick="alert('Feature B')">Feature B - Updated !!!!</a>
+                    <a href="http://google.com.vn?q=Feature A is coming">Go to Google</a>
                 </div>
             </div>
         </div>
