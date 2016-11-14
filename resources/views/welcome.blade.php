@@ -84,7 +84,7 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                     <a href="javascript:void()" onclick="alert('Feature B')">Feature B - Updated !!!!</a>
                     <a href="javascript:void()" onclick="alert('Hello world')">Changed by feature 6</a>
-                    <a href="http://google.com.vn?q=Feature A is coming">Go to Google</a>
+                    <a href="http://google.com.vn?q=Feature A is coming">Go to Twitter</a>
                 </div>
             </div>
         </div>
