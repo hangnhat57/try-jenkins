@@ -26,7 +26,7 @@ class ExampleTest extends TestCase
     public function testFeatureA()
     {
         $this->visit('/')
-             ->see('Go to Twitter');
+             ->see('Go to Google');
     }
 
     public function testFeature6()
