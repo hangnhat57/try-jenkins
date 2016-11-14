@@ -80,11 +80,10 @@
 
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                     <a href="javascript:void()" onclick="alert('Feature B')">Feature B - Updated !!!!</a>
+                    <a href="javascript:void()" onclick="alert('Hello world')">Changed by feature 6</a>
                     <a href="http://google.com.vn?q=Feature A is coming">Go to Google</a>
                 </div>
             </div>
