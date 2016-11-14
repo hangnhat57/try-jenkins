@@ -28,4 +28,10 @@ class ExampleTest extends TestCase
         $this->visit('/')
              ->see('Go to Google');
     }
+
+    public function testFeature6()
+    {
+        $this->visit('/')
+             ->see('Changed by feature 6');
+    }
 }
