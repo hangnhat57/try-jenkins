@@ -49,7 +49,7 @@
         <delete dir="${build-dir}/pdepend" />
     </target>
 
-    <target name="composer" depends="clean-composer,composer-install,composer-update,composer-init" description="Install or update dependencies" />
+    <target name="composer" depends="clean-composer,composer-init,composer-update" description="Install or update dependencies" />
 
     <!--// Check to see it the vendor folder already exist, if so, then no reason to run //-->
     <target name="composer.check">
