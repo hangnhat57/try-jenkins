@@ -119,7 +119,7 @@
             <arg value="--log-pmd" />
             <arg value="${build-dir}/logs/pmd-cpd.xml" />
             <arg value="--exclude"/>
-            <arg value="${src}/api/"/>
+            <arg value="${src-dir}/vendor/"/>
             <arg path="${src-dir}" />
         </exec>
     </target>
