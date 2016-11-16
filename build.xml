@@ -18,7 +18,7 @@
         <property name="prepare.done" value="true"/>
     </target>
 
-    <target name="composer" depends="composer-install,composer-update" description="Install or update dependencies" />
+    <target name="composer" depends="composer-laravel,composer-update" description="Install or update dependencies" />
 
     <!--// Check to see it the vendor folder already exist, if so, then no reason to run //-->
     <target name="composer.check">
@@ -38,6 +38,13 @@
        <echo>Updating dependencies</echo>
        <exec executable="composer" failonerror="true">
            <arg value="update" />
+       </exec>
+    </target>
+
+    <target name="composer-laravel" depends="composer.check" unless="composer.lock.exist.in.gitignore" description="Installing Laravel dependencies">
+       <echo>Installing dependencies</echo>
+       <exec executable="composer" failonerror="true">
+           <arg value="test" />
        </exec>
     </target>
 
