@@ -2,7 +2,7 @@
 
 <project name="YourProject" default="build" basedir=".">
     <property name="build-dir" value="${basedir}/build" />
-    <property name="src-dir" value="." />
+    <property name="src-dir" value="${basedir}/src" />
 
     <target name="build"
         depends="build-common,phploc,phpdox,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb" />
@@ -38,7 +38,7 @@
         </parallel>
     </target>
 
-    <target name="clean" depends="clean-build" description="Cleanup build and composer artifacts" />
+    <target name="clean" depends="clean-build,clean-composer" description="Cleanup build and composer artifacts" />
 
     <target name="clean-build" description="Cleanup build artifacts">
         <echo>Cleaning out the build artifacts</echo>
@@ -49,7 +49,7 @@
         <delete dir="${build-dir}/pdepend" />
     </target>
 
-    <target name="composer" depends="composer-init" description="Install or update dependencies" />
+    <target name="composer" depends="clean-composer,composer-install,composer-update" description="Install or update dependencies" />
 
     <!--// Check to see it the vendor folder already exist, if so, then no reason to run //-->
     <target name="composer.check">
@@ -76,13 +76,6 @@
         </exec>
     </target>
 
-    <target name="composer-init" depends="composer.check" unless="composer.lock.exist.in.gitignore" description="Setup dependencies">
-        <echo>Setup dependencies</echo>
-        <exec executable="composer" failonerror="true">
-            <arg value="test" />
-        </exec>
-    </target>
-
     <target name="lint" description="Perform syntax check of sourcecode files">
         <apply executable="php" failonerror="false">
             <arg value="-l" />
@@ -98,7 +91,6 @@
             <arg value="--jdepend-xml=${build-dir}/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${build-dir}/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${build-dir}/pdepend/overview-pyramid.svg" />
-            <arg value="--ignore=${src-dir}/vendor/"/>
             <arg path="${src-dir}" />
         </exec>
     </target>
@@ -118,8 +110,6 @@
         <exec executable="phpcpd">
             <arg value="--log-pmd" />
             <arg value="${build-dir}/logs/pmd-cpd.xml" />
-            <arg value="--exclude"/>
-            <arg value="${src-dir}/vendor/"/>
             <arg path="${src-dir}" />
         </exec>
     </target>
@@ -137,7 +127,6 @@
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${build-dir}/logs/checkstyle.xml" />
             <arg value="--standard=${build-dir}/phpcs.xml" />
-            <arg value="--ignore=${src-dir}/vendor/" />
             <arg path="${src-dir}" />
         </exec>
     </target>
@@ -153,8 +142,6 @@
         <exec executable="phploc">
            <arg value="--log-csv" />
            <arg value="${build-dir}/logs/phploc.csv" />
-           <arg value="--exclude"/>
-           <arg value="${src-dir}/vendor"/>
            <arg path="${src-dir}" />
         </exec>
     </target>
@@ -169,8 +156,6 @@
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="phpmd">
-            <arg value="--exclude"/>
-            <arg value="${src-dir}/vendor/"/>
             <arg path="${src-dir}" />
             <arg value="xml" />
             <arg value="${build-dir}/phpmd.xml" />
