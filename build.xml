@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Money" default="build">
-    <target name="build" depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdox,-check-failure"/>
+    <target name="build" depends="prepare,composer,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdox,-check-failure"/>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/api"/>
@@ -16,6 +16,29 @@
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
         <property name="prepare.done" value="true"/>
+    </target>
+
+    <target name="composer" depends="composer-install,composer-update" description="Install or update dependencies" />
+
+    <!--// Check to see it the vendor folder already exist, if so, then no reason to run //-->
+    <target name="composer.check">
+       <condition property="composer.lock.exist.in.gitignore">
+           <resourcecontains resource="${basedir}/.gitignore" substring="composer.lock" />
+       </condition>
+    </target>
+
+    <target name="composer-install" depends="composer.check" unless="composer.lock.exist.in.gitignore" description="Installing dependencies">
+       <echo>Installing dependencies</echo>
+       <exec executable="composer" failonerror="true">
+           <arg value="install" />
+       </exec>
+    </target>
+
+    <target name="composer-update" depends="composer.check" if="composer.lock.exist.in.gitignore" description="Updating dependencies">
+       <echo>Updating dependencies</echo>
+       <exec executable="composer" failonerror="true">
+           <arg value="update" />
+       </exec>
     </target>
 
     <target name="lint">
