@@ -5,3 +5,12 @@
 Homestead.json
 Homestead.yaml
 .env
+
+# CI generated files
+build/api/
+build/coverage/
+build/logs/
+build/pdepend/
+build/phpdox/
+build/testdox/
+cache.properties
