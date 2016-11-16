@@ -142,6 +142,7 @@
             <arg value="--exclude=vendor"/>
             <arg value="--exclude=bootstrap/"/>
             <arg value="--exclude=storage/"/>
+            <arg value="--min-tokens=20"/>
             <arg path="${basedir}"/>
         </exec>
     </target>
@@ -152,6 +153,7 @@
             <arg value="--exclude=vendor"/>
             <arg value="--exclude=bootstrap/"/>
             <arg value="--exclude=storage/"/>
+            <arg value="--min-tokens=20"/>
             <arg value="--log-pmd"/>
             <arg path="${basedir}/build/logs/pmd-cpd.xml"/>
             <arg path="${basedir}"/>
