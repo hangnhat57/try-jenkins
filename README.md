@@ -1,5 +1,5 @@
 try-jenkins
 ==============================
-Practise CI/CD with jenkins 
+Practise CI/CD with Jenkins 
 
 
