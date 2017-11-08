@@ -13,17 +13,17 @@ properties([
 node {
     echo env.repo
     echo env.notifyTo
-    buildStep("Run") {
-        deleteDir()
-        checkout scm
-        setBuildStatus('Pendingggggg!', "PENDING")
-        sh 'git merge origin/master'
-        sh 'cp .env.example .env'
-        sh 'composer install'
-        sh 'php artisan key:generate'
-        sh 'vendor/bin/phpunit'
-    }
-    setBuildStatus('Build success!', "SUCCESS")
+    // buildStep("Run") {
+    //     deleteDir()
+    //     checkout scm
+    //     setBuildStatus('Pendingggggg!', "PENDING")
+    //     sh 'git merge origin/master'
+    //     sh 'cp .env.example .env'
+    //     sh 'composer install'
+    //     sh 'php artisan key:generate'
+    //     sh 'vendor/bin/phpunit'
+    // }
+    // setBuildStatus('Build success!', "SUCCESS")
 }
 
 void setBuildStatus(String message, String state) {
