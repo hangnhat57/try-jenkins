@@ -1,8 +1,6 @@
 #!/usr/bin/env groovy
-environment {
-   repo = 'https://github.com/gsmartsolutions/try-jenkins'
-   notifyTo = 'tucq88@gmail.com'
-}
+REPO_URL = 'https://github.com/gsmartsolutions/try-jenkins'
+NOTIFY_TO = 'tucq88@gmail.com'
 
 properties([
     pipelineTriggers([
@@ -11,8 +9,8 @@ properties([
 ])
 
 node {
-    echo env.repo
-    echo env.notifyTo
+    echo REPO_URL
+    echo NOTIFY_TO
     // buildStep("Run") {
     //     deleteDir()
     //     checkout scm
