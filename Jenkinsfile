@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 REPO_URL = "https://github.com/gsmartsolutions/try-jenkins"
-NOTIFY_TO = "tucq88@gmail.com"
+NOTIFY_TO = "tucq88@gmail.com, tu.chu@gsmartsolutions.com"
 
 properties([
     pipelineTriggers([
@@ -9,47 +9,50 @@ properties([
 ])
 
 node {
-    buildStep("Run") {
-        deleteDir()
-        checkout scm
-        setBuildStatus('Pendingggggg!', "PENDING")
-        sh 'git merge origin/master'
-        sh 'cp .env.example .env'
-        sh 'composer install'
-        sh 'php artisan key:generate'
-        sh 'vendor/bin/phpunit'
-    }
-    setBuildStatus('Build success!', "SUCCESS")
+    currentBuild.result = 'SUCCESS'
+    try {
+        stage('initial') {
+            checkout scm
+            setBuildStatus('Start building...', 'PENDING')
+        }
+        stage("prepare") {
+            sh 'cp .env.example .env'
+            sh 'composer install'
+            sh 'php artisan key:generate'
+        }
+        stage("phpunit") {
+            sh 'vendor/bin/phpunit'
+        }
+        setBuildStatus('Built successfully!', 'SUCCESS')
+     } catch (error) {
+        stage("report error") {
+            setBuildStatus('Built failed', 'FAILURE')
+            currentBuild.result = 'FAILURE'
+            notifyByMail()
+        }
+        throw error
+     }
 }
 
 void setBuildStatus(String message, String state) {
-  step([
+    step([
         $class: "GitHubCommitStatusSetter",
         reposSource: [$class: "ManuallyEnteredRepositorySource", url: REPO_URL ],
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
-        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "FAILURE"]],
+        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins"],
+        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [
             $class: "ConditionalStatusResultSource",
             results: [
                 [ $class: "AnyBuildResult", message: message, state: state ]
             ]
         ]
-  ]);
+    ]);
 }
 
 void notifyByMail() {
-    emailext(
+    emailext (
         to: NOTIFY_TO,
         subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        body: "Please go to ${env.BUILD_URL} for detail"
+        body: "Please go to ${env.BUILD_URL} for detail!"
     )
-}
-
-void buildStep(String message, Closure closure) {
-  stage(message);
-  try {
-    closure();
-  } catch (Exception e) {
-    setBuildStatus('Build failed', "FAILURE");
-  }
 }
