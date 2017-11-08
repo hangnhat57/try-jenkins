@@ -34,12 +34,21 @@ void setBuildStatus(String message, String state) {
   ]);
 }
 
+void notifyByMail() {
+    step([
+        $class: 'Mailer',
+        recipients: 'tucq88@gmail.com',
+        notifyEveryUnstableBuild: true,
+        sendToIndividuals: true
+    ]);
+}
+
 void buildStep(String message, Closure closure) {
   stage(message);
   try {
     closure();
   } catch (Exception e) {
-    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'tucq88@gmail.com', sendToIndividuals: true])
+    notifyByMail();
     setBuildStatus('Build failed', "FAILURE");
   }
 }
