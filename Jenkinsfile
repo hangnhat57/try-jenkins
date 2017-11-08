@@ -11,6 +11,8 @@ properties([
 ])
 
 node {
+    echo env.repo
+    echo env.notifyTo
     buildStep("Run") {
         deleteDir()
         checkout scm
@@ -21,11 +23,6 @@ node {
         sh 'php artisan key:generate'
         sh 'vendor/bin/phpunit'
     }
-    echo env.notifyTo
-    emailext to: env.notifyTo,
-        subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        body: "Please go to ${env.BUILD_URL}."
-
     setBuildStatus('Build success!', "SUCCESS")
 }
 
@@ -46,9 +43,11 @@ void setBuildStatus(String message, String state) {
 
 void notifyByMail() {
     echo env.notifyTo
-    emailext to: env.notifyTo,
+    emailext(
+        to: env.notifyTo,
         subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Please go to ${env.BUILD_URL}."
+    )
 }
 
 void buildStep(String message, Closure closure) {
