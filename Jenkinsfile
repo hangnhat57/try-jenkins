@@ -1,4 +1,9 @@
 #!/usr/bin/env groovy
+environment {
+   repo = 'https://github.com/gsmartsolutions/try-jenkins'
+   notifyTo = 'tucq88@gmail.com'
+}
+
 properties([
     pipelineTriggers([
         [$class: "GitHubPushTrigger"]
@@ -9,20 +14,25 @@ node {
     buildStep("Run") {
         deleteDir()
         checkout scm
-        setBuildStatus('Pendinggggg!', "PENDING")
+        setBuildStatus('Pendingggggg!', "PENDING")
         sh 'git merge origin/master'
         sh 'cp .env.example .env'
         sh 'composer install'
         sh 'php artisan key:generate'
         sh 'vendor/bin/phpunit'
     }
+    echo env.notifyTo
+    emailext to: env.notifyTo,
+        subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        body: "Please go to ${env.BUILD_URL}."
+
     setBuildStatus('Build success!', "SUCCESS")
 }
 
 void setBuildStatus(String message, String state) {
   step([
         $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/gsmartsolutions/try-jenkins"],
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: env.repo ],
         contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "FAILURE"]],
         statusResultSource: [
@@ -35,12 +45,10 @@ void setBuildStatus(String message, String state) {
 }
 
 void notifyByMail() {
-    step([
-        $class: 'Mailer',
-        recipients: 'tucq88@gmail.com',
-        notifyEveryUnstableBuild: true,
-        sendToIndividuals: true
-    ]);
+    echo env.notifyTo
+    emailext to: env.notifyTo,
+        subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        body: "Please go to ${env.BUILD_URL}."
 }
 
 void buildStep(String message, Closure closure) {
@@ -48,7 +56,6 @@ void buildStep(String message, Closure closure) {
   try {
     closure();
   } catch (Exception e) {
-    notifyByMail();
     setBuildStatus('Build failed', "FAILURE");
   }
 }
