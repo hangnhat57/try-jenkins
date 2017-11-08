@@ -9,25 +9,23 @@ properties([
 ])
 
 node {
-    echo REPO_URL
-    echo NOTIFY_TO
-    // buildStep("Run") {
-    //     deleteDir()
-    //     checkout scm
-    //     setBuildStatus('Pendingggggg!', "PENDING")
-    //     sh 'git merge origin/master'
-    //     sh 'cp .env.example .env'
-    //     sh 'composer install'
-    //     sh 'php artisan key:generate'
-    //     sh 'vendor/bin/phpunit'
-    // }
-    // setBuildStatus('Build success!', "SUCCESS")
+    buildStep("Run") {
+        deleteDir()
+        checkout scm
+        setBuildStatus('Pendingggggg!', "PENDING")
+        sh 'git merge origin/master'
+        sh 'cp .env.example .env'
+        sh 'composer install'
+        sh 'php artisan key:generate'
+        sh 'vendor/bin/phpunit'
+    }
+    setBuildStatus('Build success!', "SUCCESS")
 }
 
 void setBuildStatus(String message, String state) {
   step([
         $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: env.repo ],
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: REPO_URL ],
         contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "FAILURE"]],
         statusResultSource: [
@@ -40,9 +38,8 @@ void setBuildStatus(String message, String state) {
 }
 
 void notifyByMail() {
-    echo env.notifyTo
     emailext(
-        to: env.notifyTo,
+        to: NOTIFY_TO,
         subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Please go to ${env.BUILD_URL}."
     )
