@@ -41,7 +41,7 @@ void notifyByMail() {
     emailext(
         to: NOTIFY_TO,
         subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        body: "Please go to ${env.BUILD_URL}."
+        body: "Please go to ${env.BUILD_URL} for detail"
     )
 }
 
