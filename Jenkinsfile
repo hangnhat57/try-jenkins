@@ -39,6 +39,7 @@ void buildStep(String message, Closure closure) {
   try {
     closure();
   } catch (Exception e) {
+    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'tucq88@gmail.com', sendToIndividuals: true])
     setBuildStatus('Build failed', "FAILURE");
   }
 }
