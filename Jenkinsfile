@@ -14,7 +14,7 @@ node {
         stage('initial') {
             git {
             remote {
-                github('test-owner/test-project')
+                github('hangnhat57/try-jenkins')
                 refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
             branch('master')
@@ -26,7 +26,7 @@ node {
             sh 'php artisan key:generate'
         }
         stage("phpunit") {
-            sh 'vendor/bin/phpunit'
+            sh 'vendor/bin/phpunitt'
         }
         setBuildStatus('Built successfully!', 'SUCCESS')
      } catch (error) {
