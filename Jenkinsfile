@@ -26,7 +26,7 @@ node {
             sh 'php artisan key:generate'
         }
         stage("phpunit") {
-            sh 'vendor/bin/phpunit'
+            sh 'vendor/bin/phpunitt'
         }
         setBuildStatus('Built successfully!', 'SUCCESS')
      } catch (error) {
