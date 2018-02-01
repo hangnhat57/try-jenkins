@@ -26,7 +26,7 @@ node {
         setBuildStatus('Built successfully!', 'SUCCESS')
      } catch (error) {
         stage("report error") {
-            setBuildStatus('Built failedd', 'FAILURE')
+            setBuildStatus('Built failed!', 'FAILURE')
             currentBuild.result = 'FAILURE'
             notifyByMail()
         }
