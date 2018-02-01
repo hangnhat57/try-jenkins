@@ -15,7 +15,7 @@ node {
             echo "Hello"
             echo "\n It's me"
         }
-        }
+        
         stage("prepare") {
             sh 'cp .env.example .env'
             sh 'composer install'
