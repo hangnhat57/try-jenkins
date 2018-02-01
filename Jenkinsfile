@@ -11,8 +11,17 @@ properties([
 node {
     currentBuild.result = 'SUCCESS'
     try {
-        stage ('Checkout') {
- 	        checkout scm
+
+
+        stage('initial') {
+            git {
+            remote {
+                github('hangnhat57/try-jenkins')
+                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+            }
+            branch('master')
+        }
+
         }
         stage("prepare") {
             sh 'cp .env.example .env'
