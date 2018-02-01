@@ -14,7 +14,7 @@ node {
         stage('initial') {
             git {
             remote {
-                github('test-owner/test-project')
+                github('hangnhat57/try-jenkins')
                 refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
             branch('${sha1}')
