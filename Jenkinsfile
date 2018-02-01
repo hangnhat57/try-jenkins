@@ -17,7 +17,7 @@ node {
                 github('test-owner/test-project')
                 refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
-            branch('${sha1}')
+            branch('master')
         }
         }
         stage("prepare") {
