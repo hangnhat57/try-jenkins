@@ -11,17 +11,8 @@ properties([
 node {
     currentBuild.result = 'SUCCESS'
     try {
-
-
         stage('initial') {
-            git {
-            remote {
-                github('hangnhat57/try-jenkins')
-                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
-            }
-            branch('master')
-        }
-
+           echo "Hello"
         }
         stage("prepare") {
             sh 'cp .env.example .env'
