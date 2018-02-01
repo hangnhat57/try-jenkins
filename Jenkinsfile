@@ -12,8 +12,13 @@ node {
     currentBuild.result = 'SUCCESS'
     try {
         stage('initial') {
-            checkout scm
-            setBuildStatus('Start building...', 'PENDING')
+            git {
+            remote {
+                github('hangnhat57/try-jenkins')
+                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+            }
+            branch('${sha1}')
+        }
         }
         stage("prepare") {
             sh 'cp .env.example .env'
@@ -21,9 +26,9 @@ node {
             sh 'php artisan key:generate'
         }
         stage("phpunit") {
-            sh 'vendor/bin/phpunit'
+            sh 'vendor/bin/phpunitt'
         }
-        setBuildStatus('Built successfully nhe!', 'SUCCESS')
+        setBuildStatus('Built successfully!', 'SUCCESS')
      } catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
