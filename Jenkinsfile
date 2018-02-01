@@ -8,11 +8,12 @@ properties([
     ])
 ])
 
-node {
+
     currentBuild.result = 'SUCCESS'
     try {
         stage('initial') {
-           echo "Hello"
+           echo "HelloWorld"
+
         }
         stage("prepare") {
             sh 'cp .env.example .env'
@@ -31,7 +32,7 @@ node {
         }
         throw error
      }
-}
+
 
 void setBuildStatus(String message, String state) {
     step([
