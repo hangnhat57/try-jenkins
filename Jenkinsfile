@@ -23,7 +23,7 @@ node {
         stage("phpunit") {
             sh 'vendor/bin/phpunit'
         }
-        setBuildStatus('Built successfully!!!!', 'SUCCESS')
+        setBuildStatus('Built successfully nhe!', 'SUCCESS')
      } catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
