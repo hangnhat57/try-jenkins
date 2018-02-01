@@ -12,8 +12,13 @@ node {
     currentBuild.result = 'SUCCESS'
     try {
         stage('initial') {
-            checkout scm
-            setBuildStatus('Start building...', 'PENDING')
+            git {
+            remote {
+                github('test-owner/test-project')
+                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+            }
+            branch('${sha1}')
+        }
         }
         stage("prepare") {
             sh 'cp .env.example .env'
