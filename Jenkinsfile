@@ -12,12 +12,8 @@ node {
     currentBuild.result = 'SUCCESS'
     try {
         stage('initial') {
-            git {
-            remote {
-                github('hangnhat57/try-jenkins')
-                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
-            }
-            branch('${sha1}')
+            echo "Hello"
+            echo "\n It's me"
         }
         }
         stage("prepare") {
