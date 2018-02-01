@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
-REPO_URL = "https://github.com/gsmartsolutions/try-jenkins"
-NOTIFY_TO = "tucq88@gmail.com, tu.chu@gsmartsolutions.com"
+REPO_URL = "https://github.com/hangnhat57/try-jenkins"
+NOTIFY_TO = "hangnhat57@gmail.com, nhat.nguyen@twentyci.asia"
 
 properties([
     pipelineTriggers([
