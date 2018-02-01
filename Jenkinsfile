@@ -8,7 +8,7 @@ properties([
     ])
 ])
 
-node {
+
     currentBuild.result = 'SUCCESS'
     try {
         stage('initial') {
@@ -33,7 +33,7 @@ node {
         }
         throw error
      }
-}
+
 
 void setBuildStatus(String message, String state) {
     step([
