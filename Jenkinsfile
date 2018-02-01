@@ -11,7 +11,9 @@ properties([
 node {
     currentBuild.result = 'SUCCESS'
     try {
-        
+        stage ('Checkout') {
+ 	        checkout scm
+        }
         stage("prepare") {
             sh 'cp .env.example .env'
             sh 'composer install'
