@@ -11,6 +11,8 @@ properties([
 node {
     currentBuild.result = 'SUCCESS'
     try {
+
+
         stage('initial') {
             git {
             remote {
@@ -19,6 +21,7 @@ node {
             }
             branch('master')
         }
+
         }
         stage("prepare") {
             sh 'cp .env.example .env'
