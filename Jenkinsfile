@@ -23,7 +23,7 @@ properties([
         stage("phpunit") {
             sh 'vendor/bin/phpunitt'
         }
-        setBuildStatus('Built successfully!', 'SUCCESS')
+        setBuildStatus('Built successfully nhe!', 'SUCCESS')
      } catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
