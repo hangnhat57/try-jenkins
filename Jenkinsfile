@@ -1,29 +1,67 @@
-#!/usr/bin/env groovy
-REPO_URL = "https://github.com/hangnhat57/try-jenkins"
-NOTIFY_TO = "hangnhat57@gmail.com, nhat.nguyen@twentyci.asia"
+import java.nio.file.CopyOption
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.nio.file.StandardOpenOption
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
-properties([
-    pipelineTriggers([
-        [$class: "GitHubPushTrigger"]
-    ])
-])
 
+def getWorkspace() {
+	//fix for branches with '/' in name. See https://issues.jenkins-ci.org/browse/JENKINS-30744
+    pwd().replace("%2F", "_")
+}
 
+node {
+  ws(getWorkspace()){
+    def gitCredentialsId = "HASH-HERE";
+    def gitRepository = "https://PATH/REPO.git";
+    
+    if(env.BRANCH_NAME.startsWith('PR-')){
+      currentBuild.result = 'ABORTED'
+      print('To avoid dublicate builds Pull Request\'s jobs are disabled right now. I\'s not an error, just workaround to save the resources...')
+      return
+    }
+    
+    println "Environment:"
+    bat 'set > env.txt' 
+	for (String i : readFile('env.txt').split("\r?\n")) {
+    	println i
+	}
     currentBuild.result = 'SUCCESS'
-    try {
-        stage('initial') {
-           echo "HelloWorld"
-
-        }
-        stage("prepare") {
+    try{
+    stage('Checkout') {
+      
+      step([$class: 'WsCleanup', notFailBuild: false])
+      
+      def branchName = env.BRANCH_NAME
+      if(branchName.startsWith('PR-')){
+        branchName = 'pr/'+ env.CHANGE_ID
+      }
+      checkout([$class: 'GitSCM', 
+            branches: [[name: branchName]], 
+            poll: true, 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [
+                [$class: 'GitLFSPull']               
+            ],
+            userRemoteConfigs: [
+                [credentialsId: "${gitCredentialsId}",
+                 url: "${gitRepository}",
+                 refspec: '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*/from:refs/remotes/origin/pr/*'
+                ]]
+            ])
+    }
+     stage("prepare") {
             sh 'cp .env.example .env'
             sh 'composer install'
             sh 'php artisan key:generate'
         }
         stage("phpunit") {
-            sh 'vendor/bin/phpunitt'
+            sh 'vendor/bin/phpunit'
         }
-        setBuildStatus('Built successfully nhe!', 'SUCCESS')
+        setBuildStatus('Built successfully!!!!', 'SUCCESS')
      } catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
@@ -32,7 +70,7 @@ properties([
         }
         throw error
      }
-
+}
 
 void setBuildStatus(String message, String state) {
     step([
