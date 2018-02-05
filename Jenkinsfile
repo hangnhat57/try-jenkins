@@ -13,17 +13,6 @@ def getWorkspace() {
     pwd().replace("%2F", "_")
 }
 
-<<<<<<< HEAD
-
-    currentBuild.result = 'SUCCESS'
-    try {
-        stage('initial') {
-            echo "Hello"
-            echo "\n It's me"
-        }
-        
-        stage("prepare") {
-=======
 node {
   ws(getWorkspace()){
     def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
@@ -40,6 +29,7 @@ node {
 	for (String i : readFile('env.txt').split("\r?\n")) {
     	println i
 	}
+  }
     currentBuild.result = 'SUCCESS'
     try{
     stage('Checkout') {
@@ -65,7 +55,6 @@ node {
             ])
     }
      stage("prepare") {
->>>>>>> d4b859ec72ec9a2170ae17f6df808da7b557c94b
             sh 'cp .env.example .env'
             sh 'composer install'
             sh 'php artisan key:generate'
@@ -73,11 +62,7 @@ node {
         stage("phpunit") {
             sh 'vendor/bin/phpunitt'
         }
-<<<<<<< HEAD
-        setBuildStatus('Built successfully!', 'SUCCESS')
-=======
         setBuildStatus('Built successfully!!!!', 'SUCCESS')
->>>>>>> d4b859ec72ec9a2170ae17f6df808da7b557c94b
      } catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
@@ -87,7 +72,7 @@ node {
         throw error
      }
 
-
+}
 void setBuildStatus(String message, String state) {
     step([
         $class: "GitHubCommitStatusSetter",
