@@ -15,8 +15,8 @@ def getWorkspace() {
 
 node {
   ws(getWorkspace()){
-    def gitCredentialsId = "HASH-HERE";
-    def gitRepository = "https://PATH/REPO.git";
+    def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
+    def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
     
     if(env.BRANCH_NAME.startsWith('PR-')){
       currentBuild.result = 'ABORTED'
