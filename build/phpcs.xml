@@ -4,6 +4,7 @@
     <!-- <exclude name="Generic.Files.LineLength"/> -->
     <exclude name="PSR1.Classes.ClassDeclaration"/>
   </rule>
+  <rule ref="Generic.PHP.DisallowShortOpenTag"/>
 
   <exclude-pattern>*.blade.php</exclude-pattern>
   <exclude-pattern>*.twig.php</exclude-pattern>
