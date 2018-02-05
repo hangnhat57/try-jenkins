@@ -18,11 +18,7 @@ node {
     def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
     def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
     
-    if(env.BRANCH_NAME.startsWith('PR-')){
-      currentBuild.result = 'ABORTED'
-      print('To avoid dublicate builds Pull Request\'s jobs are disabled right now. I\'s not an error, just workaround to save the resources...')
-      return
-    }
+   
     
     println "Environment:"
     bat 'set > env.txt' 
@@ -36,10 +32,7 @@ node {
       
       step([$class: 'WsCleanup', notFailBuild: false])
       
-      def branchName = env.BRANCH_NAME
-      if(branchName.startsWith('PR-')){
-        branchName = 'pr/'+ env.CHANGE_ID
-      }
+      
       checkout([$class: 'GitSCM', 
             branches: [[name: branchName]], 
             poll: true, 
@@ -76,7 +69,7 @@ node {
 void setBuildStatus(String message, String state) {
     step([
         $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: REPO_URL ],
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/hangnhat57/try-jenkins" ],
         contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins"],
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [
