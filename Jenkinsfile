@@ -1,74 +1,18 @@
 node{
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
-    stage('Checkout'){
+
+    stage('Checkout') {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
         doGenerateSubmoduleConfigurations: false,
         extensions: [], 
         submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: "${gitCredentialsId}", url: "${gitRepository}"]]])
-
-    }
+        }
+        
     try
     {
     stage("prepare") {
-            sh 'cp .env.example .env'
-            sh 'composer install'
-            sh 'php artisan key:generate'
-    }
-    stage("phpunit") {
-            sh 'vendor/bin/phpunitt'
-    }
-    }catch(error) {
-        stage("report error") {
-            setBuildStatus('Built failed!', 'FAILURE')
-            currentBuild.result = 'FAILURE'
-            notifyByMail()
-        }
-        throw error
-     }
-
-    }
-
-
-
-}
-
-
-def getWorkspace() {
-	//fix for branches with '/' in name. See https://issues.jenkins-ci.org/browse/JENKINS-30744
-    pwd().replace("%2F", "_")
-}
-
-node {
-  ws(getWorkspace()){
-    def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
-    def gitRepository = "https://github.com/hangnhat57/try-jenkins";
-   
-  }
-    ``.result = 'SUCCESS'
-    
-    stage('Checkout') {
-      
-      step([$class: 'WsCleanup', notFailBuild: false])
-      
-      
-      checkout([$class: 'GitSCM', 
-            branches: [[name: branchName]], 
-            poll: true, 
-            doGenerateSubmoduleConfigurations: false, 
-            extensions: [
-                [$class: 'GitLFSPull']               
-            ],
-            userRemoteConfigs: [
-                [credentialsId: "${gitCredentialsId}",
-                 url: "${gitRepository}",
-                 refspec: '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*/from:refs/remotes/origin/pr/*'
-                ]]
-            ])
-    }
-    try{
-     stage("prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
             sh 'php composer.phar install install'  
@@ -77,18 +21,78 @@ node {
     stage("phpunit") {
             sh 'vendor/bin/phpunitt'
         }
-        setBuildStatus('Built successfully!!!!', 'SUCCESS')
-     } 
-     catch (error) {
+    }
+    catch(error) 
+    {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
             currentBuild.result = 'FAILURE'
             notifyByMail()
         }
         throw error
-     }
+    }
 
 }
+
+
+
+
+
+
+// def getWorkspace() {
+// 	//fix for branches with '/' in name. See https://issues.jenkins-ci.org/browse/JENKINS-30744
+//     pwd().replace("%2F", "_")
+// }
+
+// node {
+//   ws(getWorkspace()){
+//     def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
+//     def gitRepository = "https://github.com/hangnhat57/try-jenkins";
+   
+//   }
+//     ``.result = 'SUCCESS'
+    
+//     stage('Checkout') {
+      
+//       step([$class: 'WsCleanup', notFailBuild: false])
+      
+      
+//       checkout([$class: 'GitSCM', 
+//             branches: [[name: branchName]], 
+//             poll: true, 
+//             doGenerateSubmoduleConfigurations: false, 
+//             extensions: [
+//                 [$class: 'GitLFSPull']               
+//             ],
+//             userRemoteConfigs: [
+//                 [credentialsId: "${gitCredentialsId}",
+//                  url: "${gitRepository}",
+//                  refspec: '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*/from:refs/remotes/origin/pr/*'
+//                 ]]
+//             ])
+//     }
+//     try{
+//      stage("prepare") {
+//             sh 'cp .env.example .env'
+//             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
+//             sh 'php composer.phar install install'  
+//             sh 'php artisan key:generate'
+//         }
+//     stage("phpunit") {
+//             sh 'vendor/bin/phpunitt'
+//         }
+//         setBuildStatus('Built successfully!!!!', 'SUCCESS')
+//      } 
+//      catch (error) {
+//         stage("report error") {
+//             setBuildStatus('Built failed!', 'FAILURE')
+//             currentBuild.result = 'FAILURE'
+//             notifyByMail()
+//         }
+//         throw error
+//      }
+
+// }
 void setBuildStatus(String message, String state) {
     step([
         $class: "GitHubCommitStatusSetter",
