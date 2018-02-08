@@ -24,7 +24,7 @@ node{
     stage("Deploy"){
         zip archive: true, dir: './', glob: '', zipFile: 'artifact.zip'
         sh 'mkdir target'
-        sh 'cp ./artifact.zip ./target/artifact.zip'
+        sh 'cp ./artifact.zip ~/artifact.zip'
     }
     }
     catch(error) 
