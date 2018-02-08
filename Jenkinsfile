@@ -15,7 +15,7 @@ node{
     stage("prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
-            sh 'php composer.phar install install'  
+            sh 'php composer.phar install'  
             sh 'php artisan key:generate'
         }
     stage("phpunit") {
