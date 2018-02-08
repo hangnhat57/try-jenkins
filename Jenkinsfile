@@ -21,6 +21,11 @@ node{
     stage("phpunit") {
             sh 'vendor/bin/phpunitt'
         }
+    stage("Deploy"){
+        zip archive: true, dir: './', glob: '', zipFile: 'artifact.zip'
+        sh 'mkdir target'
+        sh 'cp ./artifact.zip ./target/artifact.zip'
+    }
     }
     catch(error) 
     {
@@ -110,7 +115,7 @@ void setBuildStatus(String message, String state) {
 
 void notifyByMail() {
     step(
-    mail bcc: '', cc: 'hangnhat57@gmail.com', 
+    mail  cc: 'hangnhat57@gmail.com', 
     from: 'hangnhat57@gmail.com', replyTo: 'hangnhat57@gmail.com',  
     to: 'Nhat.nguyen@twentyci.asia',subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
     body: "Please go to ${env.BUILD_URL} for detail!"
