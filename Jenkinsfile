@@ -19,7 +19,7 @@ node{
             sh 'php artisan key:generate'
         }
     stage("phpunit") {
-            sh 'vendor/bin/phpunitt'
+            sh 'vendor/bin/phpunit'
         }
     stage("Deploy"){
         zip archive: true, dir: './', glob: '', zipFile: 'artifact.zip'
