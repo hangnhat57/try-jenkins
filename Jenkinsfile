@@ -1,11 +1,38 @@
-import java.nio.file.CopyOption
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
-import java.nio.file.StandardOpenOption
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+node{
+     def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
+     def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
+    stage('Checkout'){
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [], 
+        submoduleCfg: [],
+        userRemoteConfigs: [[credentialsId: "${gitCredentialsId}", url: "${gitRepository}"]]])
+
+    }
+    try
+    {
+    stage("prepare") {
+            sh 'cp .env.example .env'
+            sh 'composer install'
+            sh 'php artisan key:generate'
+    }
+    stage("phpunit") {
+            sh 'vendor/bin/phpunitt'
+    }
+    }catch(error) {
+        stage("report error") {
+            setBuildStatus('Built failed!', 'FAILURE')
+            currentBuild.result = 'FAILURE'
+            notifyByMail()
+        }
+        throw error
+     }
+
+    }
+
+
+
+}
 
 
 def getWorkspace() {
@@ -16,18 +43,11 @@ def getWorkspace() {
 node {
   ws(getWorkspace()){
     def gitCredentialsId = "ae2594c4-8fdd-4967-b75b-18cb4b353200";
-    def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
-    
+    def gitRepository = "https://github.com/hangnhat57/try-jenkins";
    
-    
-    println "Environment:"
-    bat 'set > env.txt' 
-	for (String i : readFile('env.txt').split("\r?\n")) {
-    	println i
-	}
   }
-    currentBuild.result = 'SUCCESS'
-    try{
+    ``.result = 'SUCCESS'
+    
     stage('Checkout') {
       
       step([$class: 'WsCleanup', notFailBuild: false])
@@ -47,16 +67,19 @@ node {
                 ]]
             ])
     }
+    try{
      stage("prepare") {
             sh 'cp .env.example .env'
-            sh 'composer install'
+            sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
+            sh 'php composer.phar install install'  
             sh 'php artisan key:generate'
         }
-        stage("phpunit") {
+    stage("phpunit") {
             sh 'vendor/bin/phpunitt'
         }
         setBuildStatus('Built successfully!!!!', 'SUCCESS')
-     } catch (error) {
+     } 
+     catch (error) {
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
             currentBuild.result = 'FAILURE'
@@ -69,7 +92,7 @@ node {
 void setBuildStatus(String message, String state) {
     step([
         $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/hangnhat57/try-jenkins" ],
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "${gitRepository}" ],
         contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins"],
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [
@@ -82,9 +105,11 @@ void setBuildStatus(String message, String state) {
 }
 
 void notifyByMail() {
-    emailext (
-        to: NOTIFY_TO,
-        subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        body: "Please go to ${env.BUILD_URL} for detail!"
+    step(
+    mail bcc: '', cc: 'hangnhat57@gmail.com', 
+    from: 'hangnhat57@gmail.com', replyTo: 'hangnhat57@gmail.com',  
+    to: 'Nhat.nguyen@twentyci.asia',subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+    body: "Please go to ${env.BUILD_URL} for detail!"
     )
+    
 }
