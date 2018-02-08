@@ -32,7 +32,7 @@ node{
         stage("report error") {
             setBuildStatus('Built failed!', 'FAILURE')
             currentBuild.result = 'FAILURE'
-            notifyByMail()
+            
         }
         throw error
     }
@@ -113,12 +113,12 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-void notifyByMail() {
-    step(
-    mail  cc: 'hangnhat57@gmail.com', 
-    from: 'hangnhat57@gmail.com', replyTo: 'hangnhat57@gmail.com',  
-    to: 'Nhat.nguyen@twentyci.asia',subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-    body: "Please go to ${env.BUILD_URL} for detail!"
-    )
+// void notifyByMail() {
+//     step(
+//     mail  cc: 'hangnhat57@gmail.com', 
+//     from: 'hangnhat57@gmail.com', replyTo: 'hangnhat57@gmail.com',  
+//     to: 'Nhat.nguyen@twentyci.asia',subject: "${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+//     body: "Please go to ${env.BUILD_URL} for detail!"
+//     )
     
-}
+// }
