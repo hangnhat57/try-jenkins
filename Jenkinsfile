@@ -25,11 +25,11 @@ node{
         zip archive: true, dir: './', glob: '', zipFile: 'artifact.zip'
         sh 'mkdir target'
         sh 'cp ./artifact.zip ./target/artifact.zip'
-        step("Clean"){
-            sh 'rm -rf ./artifact.zip'
-            sh 'rm -rf ./composer.phar'    
-            }
         }
+    stage("Clean"){
+        sh 'rm -rf ./artifact.zip'
+        sh 'rm -rf ./composer.phar'  
+    }
 
     }
     catch(error) 
