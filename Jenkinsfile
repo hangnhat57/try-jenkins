@@ -1,7 +1,9 @@
 node{
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
-
+     stage("Clean up") {
+        sh 'rm -rf ./' 
+    }    
     stage('Checkout') {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
         doGenerateSubmoduleConfigurations: false,
@@ -12,11 +14,7 @@ node{
         
     try
     {
-    stage("Clean up") {
-        sh 'rm -rf ./artifact.zip'
-        sh 'rm -rf ./composer.phar'
-        sh 'rm -rf ./target'  
-    }    
+   
     stage("prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
