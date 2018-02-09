@@ -23,7 +23,7 @@ node
        
     try
     {
-    notifyBuild()    
+    //notifyBuild()    
     stage("Prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
