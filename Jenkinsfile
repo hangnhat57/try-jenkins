@@ -1,27 +1,29 @@
 node{
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
-     stage("Clean up") {
+     def gitBranch = "master";
+    stages{
+    stage("Clean up") {
         sh 'rm -rf ./*' 
     }    
     stage('Checkout') {
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
+        checkout([$class: 'GitSCM', branches: [[name: "*/"+"${gitBranch}"]], 
         doGenerateSubmoduleConfigurations: false,
         extensions: [], 
         submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: "${gitCredentialsId}", url: "${gitRepository}"]]])
         }
-        
+    }    
     try
     {
-   
-    stage("prepare") {
+        
+    stage("Prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
             sh 'php composer.phar install'  
             sh 'php artisan key:generate'
         }
-    stage("phpunit") {
+    stage("Unit test") {
             sh 'vendor/bin/phpunit'
         }
     stage("Deploy"){
