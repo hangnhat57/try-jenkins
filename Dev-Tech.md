@@ -26,4 +26,13 @@ Build a pipeline to checkout - build - deploy code on CI
         ##### Options:
         1. Multi-branch pipeline: 
          We can scan projects, select branches to build, hook any changes following rules defined, then build project 
-        2. Pull Request Builder: Almost the same.
+        2. Pull Request Builder: Almost the same.  
+    - Job build:
+        #### Run with bash: 
+        1.  Clean up work space
+        2.  Checkout new code
+        3.  Set up environment
+        4.  Execute tests
+        5.  Zip and Copy to other place. Currently I don't have another server to SCP. 
+        
+
