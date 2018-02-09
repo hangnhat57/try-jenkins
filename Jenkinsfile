@@ -88,5 +88,5 @@ void notifyBuild(String buildStatus = 'STARTED') {
     colorCode = '#FF0000'
   }
 
-  slackSend channel: slackChannels, color: colorCode, message: summary, teamDomain: slackDomain, token: slackToken
+  slackSend channel: slackChannel, color: colorCode, message: summary, teamDomain: slackDomain, token: slackToken
 }
