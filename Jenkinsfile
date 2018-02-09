@@ -2,7 +2,7 @@ node{
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
      stage("Clean up") {
-        sh 'rm *' 
+        sh 'rm -rf ./*' 
     }    
     stage('Checkout') {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
