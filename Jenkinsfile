@@ -3,9 +3,9 @@ node
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
      def gitBranch = "master";
-     def slackDomain = "slack.domaim.domain";
-     def slackToken = "TokenXYZ";
-     def slackChannel = "#engineers";
+    slackDomain = "slack.domaim.domain"
+    slackToken = "TokenXYZ"
+    slackChannel = "#engineers"
    
 
 
@@ -88,5 +88,5 @@ void notifyBuild(String buildStatus = 'STARTED') {
     colorCode = '#FF0000'
   }
 
-  slackSend channel: "${slackChannel}", color: colorCode, message: summary, teamDomain: "${slackDomain}", token: "${slackToken}"
+  slackSend channel: "${slackChannels}", color: colorCode, message: summary, teamDomain: "${slackDomain}", token: "${slackToken}"
 }
