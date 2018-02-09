@@ -28,7 +28,8 @@ node{
         }
     stage("Clean"){
         sh 'rm -rf ./artifact.zip'
-        sh 'rm -rf ./composer.phar'  
+        sh 'rm -rf ./composer.phar'
+        sh 'rm -rf ./target'  
     }
 
     }
