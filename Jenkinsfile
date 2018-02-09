@@ -12,6 +12,11 @@ node{
         
     try
     {
+    stage("Clean up") {
+        sh 'rm -rf ./artifact.zip'
+        sh 'rm -rf ./composer.phar'
+        sh 'rm -rf ./target'  
+    }    
     stage("prepare") {
             sh 'cp .env.example .env'
             sh 'curl -Ol https://getcomposer.org/download/1.6.3/composer.phar'
@@ -25,13 +30,7 @@ node{
         zip archive: true, dir: './', glob: '', zipFile: 'artifact.zip'
         sh 'mkdir target'
         sh 'cp ./artifact.zip ./target/artifact.zip'
-        }
-    stage("Clean"){
-        sh 'rm -rf ./artifact.zip'
-        sh 'rm -rf ./composer.phar'
-        sh 'rm -rf ./target'  
-    }
-
+        }    
     }
     catch(error) 
     {
