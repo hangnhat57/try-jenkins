@@ -89,5 +89,5 @@ void notifyBuild(String buildStatus = 'STARTED') {
   }
 
   slackSend (color: , message: )
-  slackSend channel: "${slackChannel}", color: "${colorCode}", message: "${summary}", teamDomain: "${slackDomain}", token: "${slackToken}"
+  slackSend channel: "${slackChannel}", color: colorCode, message: summary, teamDomain: "${slackDomain}", token: "${slackToken}"
 }
