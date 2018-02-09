@@ -35,3 +35,4 @@ Build a pipeline to checkout - build - deploy code on CI
         3.  Set up environment
         4.  Execute tests
         5.  Zip and Copy to other place. Currently I don't have another server to SCP. 
+        6.  Alert build status : Email - Slack. 
