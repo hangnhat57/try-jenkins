@@ -4,7 +4,7 @@ node{
      def gitBranch = "master";
     stages{
     stage("Clean up") {
-        sh 'rm -rf ./*' 
+        step {sh 'rm -rf ./*' }
     }    
     stage('Checkout') {
         checkout([$class: 'GitSCM', branches: [[name: "*/"+"${gitBranch}"]], 
