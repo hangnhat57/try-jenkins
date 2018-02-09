@@ -6,12 +6,7 @@ node
      def slackDomain = "slack.domaim.domain";
      def slackToken = "TokenXYZ";
      def slackChannel = "#engineers";
-    properties
-    ([
-    pipelineTriggers([
-        [$class: "GitHubPushTrigger"]
-            ])
-    ])
+   
 
 
 
