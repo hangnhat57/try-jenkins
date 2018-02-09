@@ -2,9 +2,9 @@ node{
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
      def gitRepository = "https://github.com/hangnhat57/try-jenkins.git";
      def gitBranch = "master";
-    stages{
+
     stage("Clean up") {
-        step {sh 'rm -rf ./*' }
+        sh 'rm -rf ./*' 
     }    
     stage('Checkout') {
         checkout([$class: 'GitSCM', branches: [[name: "*/"+"${gitBranch}"]], 
@@ -12,8 +12,8 @@ node{
         extensions: [], 
         submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: "${gitCredentialsId}", url: "${gitRepository}"]]])
-        }
-    }    
+    }
+       
     try
     {
         
