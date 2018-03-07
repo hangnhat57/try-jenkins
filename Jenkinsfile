@@ -1,7 +1,7 @@
 slackDomain = "slack.domaim.domain"
 slackToken = "TokenXYZ"
 slackChannel = "#engineers"
-
+slackBB
 node
 {
      def gitCredentialsId = "5bad9593-8e80-4d49-9561-cae5564223d8";
